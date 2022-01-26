@@ -1,0 +1,37 @@
+domain: yylover.com
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: memcached-operator
+repo: github.com/yylover/memcached-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yylover.com
+  group: testop
+  kind: Memcached
+  path: github.com/yylover/memcached-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yylover.com
+  group: testop
+  kind: RedisSingle
+  path: github.com/yylover/memcached-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yylover.com
+  group: testop
+  kind: RedisCluster
+  path: github.com/yylover/memcached-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"

@@ -1,0 +1,58 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: memcached-operator.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: Memcached is the Schema for the memcacheds API
+      displayName: Memcached
+      kind: Memcached
+      name: memcacheds.testop.yylover.com
+      version: v1alpha1
+    - description: RedisCluster is the Schema for the redisclusters API
+      displayName: Redis Cluster
+      kind: RedisCluster
+      name: redisclusters.testop.yylover.com
+      version: v1alpha1
+    - description: RedisSingle is the Schema for the redissingles API
+      displayName: Redis Single
+      kind: RedisSingle
+      name: redissingles.testop.yylover.com
+      version: v1alpha1
+  description: memcached-operator
+  displayName: memcached-operator
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - quick
+  links:
+  - name: Memcached Operator
+    url: https://memcached-operator.domain
+  maintainers:
+  - email: yangqiangjob@foxmail.com
+    name: quickyang
+  maturity: alpha
+  provider:
+    name: quick
+    url: quickyang.com
+  version: 0.0.0

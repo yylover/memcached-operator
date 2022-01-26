@@ -1,0 +1,6 @@
+## Append samples you want in your CSV to this file as resources ##
+resources:
+- testop_v1alpha1_memcached.yaml
+- testop_v1alpha1_redissingle.yaml
+- testop_v1alpha1_rediscluster.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

@@ -1,0 +1,23 @@
+apiVersion: testop.yylover.com/v1alpha1
+kind: RedisSingle
+metadata:
+  name: redissingle-sample
+spec:
+  kubernetesConfig:
+    image: quay.io/opstree/redis:v6.2.5
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 101m
+        memory: 128Mi
+      limits:
+        cpu: 101m
+        memory: 128Mi
+  storage:
+    volumeClaimTemplate:
+      spec:
+        # storageClassName: standard
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
