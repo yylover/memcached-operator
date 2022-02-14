@@ -147,7 +147,10 @@ func generateStateFulSetsDef(stsMeta metav1.ObjectMeta, params statefulSetParame
 						{
 							Name:            stsMeta.GetName(),
 							Image:           containerParams.Image,
-							ImagePullPolicy: containerParams.ImagePullPolicy},
+							ImagePullPolicy: containerParams.ImagePullPolicy,
+							//Env:
+
+						},
 					},
 					NodeSelector:      params.NodeSelector,
 					SecurityContext:   params.SecurityContext,

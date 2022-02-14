@@ -272,7 +272,7 @@ spec:
                 - --leader-elect
                 command:
                 - /manager
-                image: yylover.com/memcached-operator:v0.0.1
+                image: controller:latest
                 livenessProbe:
                   httpGet:
                     path: /healthz

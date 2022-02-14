@@ -20,8 +20,6 @@ import (
 	"flag"
 	"os"
 
-	"sigs.k8s.io/controller-runtime/pkg/cache"
-
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -74,7 +72,7 @@ func main() {
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		//Namespace:              "develop", //指定namespace
-		NewCache:         cache.MultiNamespacedCacheBuilder([]string{"develop", "redis-operator"}), //watch 多namespace
+		//NewCache:         cache.MultiNamespacedCacheBuilder([]string{"develop", "redis-operator"}), //watch 多namespace
 		LeaderElectionID: "b6e3f7ad.yylover.com",
 	})
 	if err != nil {

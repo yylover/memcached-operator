@@ -40,13 +40,15 @@ type RedisClusterReconciler struct {
 //+kubebuilder:rbac:groups=testop.yylover.com,resources=redisclusters,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=testop.yylover.com,resources=redisclusters/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=testop.yylover.com,resources=redisclusters/finalizers,verbs=update
+//+kubebuilder:rbac:groups=apps,resources=deployments;statefulsets,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups="",resources=services;persistentvolumeclaims;pods;pods/exec,verbs=get;list;watch;create;update;patch;delete
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
 // the RedisCluster object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
-// the user.
+// the user.Reconciler error
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.10.0/pkg/reconcile
@@ -120,7 +122,25 @@ func (r *RedisClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request
 	}
 
 	log.Info("create reader cluster by execting cluster creation commands")
-	k8sutil.CheckRedisNodeCount(instance, "")
+	if k8sutil.CheckRedisNodeCount(instance, "") != int(totalReplicas) {
+		leaderCount := k8sutil.CheckRedisNodeCount(instance, "leader")
+		log.Info("CheckRedisNodeCount lead : ", "leaderCount", leaderCount)
+		if leaderCount != int(*leaderReplicas) {
+			log.Info("not all leader are part of the cluster ...", "leaders.Count", leaderCount, "instance.Size", *leaderReplicas)
+			k8sutil.ExecuteRedisClusterCommand(instance)
+		} else {
+			if *followerReplicas > 0 {
+				k8sutil.ExecuteRedisReplicationCommand(instance)
+			} else {
+				log.Info("no follower/replicas configured, skipping replication configuration", "leaderCOunt:", *leaderReplicas, "followerCOunt:", *followerReplicas)
+			}
+		}
+	} else {
+		log.Info("redis leader count is desired, check redis cluster status")
+		if k8sutil.CheckRedisClusterState(instance) > 0 {
+			k8sutil.ExecuteFailoverOperation(instance)
+		}
+	}
 
 	return ctrl.Result{RequeueAfter: time.Second * 20}, nil
 }

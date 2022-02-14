@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memop-deploy
+  namespace: develop
+spec:
+  selector:
+    matchLabels:
+      app: memop-deploy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: memop-deploy
+    spec:
+      containers:
+      - name: memop-deploy
+        image: memcached-op:v1.3
+        ports:
+        - containerPort: 8083
